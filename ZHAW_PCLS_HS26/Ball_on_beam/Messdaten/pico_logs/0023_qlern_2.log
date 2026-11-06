@@ -1,0 +1,24 @@
+[BRIDGE] hochgeladen kennlinie.py (1715 B)
+[BRIDGE] hochgeladen bob_core.py (6337 B)
+[BRIDGE] hochgeladen bob.py (2242 B)
+[BRIDGE] hochgeladen main_v3.py (7620 B)
+[BRIDGE] hochgeladen qlern.py (2828 B)
+EP,sensor,-1,0,OK,8.21
+EP,klotz,285,2,OK,1.57
+EP,sensor,-1,0,OK,9.86
+EP,klotz,282,2,OK,2.03
+EP,sensor,-1,3,OK,20.12
+EP,klotz,278,2,OK,2.21
+EP,sensor,-3,1,OK,10.93
+EP,klotz,278,2,OK,2.36
+EP,sensor,-3,0,OK,13.63
+EP,klotz,277,2,OK,9.70
+EP,sensor,-4,1,OK,10.13
+EP,klotz,282,2,OK,5.75
+EP,sensor,-3,0,OK,16.43
+EP,klotz,282,2,OK,2.54
+EP,sensor,-3,1,OK,9.95
+EP,klotz,285,2,OK,9.43
+Q sensor A0=-10.5(10) A1=-9.0(5) A2=-11.0(2) A3=-18.2(3)
+Q klotz A0=-8.6(2) A1=-7.6(2) A2=-5.6(13) A3=-12.2(3)
+QJSON {"sensor": {"Q": [-10.534995, -8.958368, -10.979149, -18.24225], "N": [10, 5, 2, 3]}, "klotz": {"Q": [-8.569069, -7.5758092, -5.6286592, -12.156453], "N": [2, 2, 13, 3]}}

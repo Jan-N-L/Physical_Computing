@@ -1,0 +1,1 @@
+{"upload": ["bridge/pico_files/kennlinie.py", "bridge/pico_files/bob_core.py", "bridge/pico_files/bob.py", "bridge/pico_files/main_v3.py", "bridge/pico_files/qlern.py"], "run": "import qlern\nqlern.training(['sensor','klotz']*8, 0.1)\nprint('QJSON', open('q_main.json').read())\n", "timeout": 1500}

@@ -1,0 +1,407 @@
+[
+    {
+        "id": "d321589ef9b5426e",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "8e83048541e8786e",
+        "type": "debug",
+        "z": "d321589ef9b5426e",
+        "name": "debug 1",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 460,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "d86620a93234a261",
+        "type": "mqtt in",
+        "z": "d321589ef9b5426e",
+        "name": "",
+        "topic": "zhaw/pcls/phyphox/landoja2",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "eabea82c6053f99d",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 120,
+        "y": 720,
+        "wires": [
+            [
+                "8e83048541e8786e",
+                "f6a7b8c9d0e10001"
+            ]
+        ]
+    },
+    {
+        "id": "7b410a8efdd8945d",
+        "type": "debug",
+        "z": "d321589ef9b5426e",
+        "name": "debug 3",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 900,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "b7c1a0d2e3f40001",
+        "type": "mqtt in",
+        "z": "d321589ef9b5426e",
+        "name": "Messung",
+        "topic": "zhaw/pcls/phyphox/landoja2",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "eabea82c6053f99d",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 60,
+        "y": 540,
+        "wires": [
+            [
+                "b7c1a0d2e3f40002"
+            ]
+        ]
+    },
+    {
+        "id": "b7c1a0d2e3f40002",
+        "type": "function",
+        "z": "d321589ef9b5426e",
+        "name": "Verzögerung messen",
+        "func": "const now = Date.now() / 1000;\nconst ts = Number(msg.payload && msg.payload.Timestamp);\nif (!Number.isFinite(ts)) {\n  node.status({fill: 'yellow', shape: 'ring', text: 'kein gültiger Timestamp: ' + JSON.stringify(msg.payload).slice(0, 60)});\n  return null;\n}\nconst last = context.get('lastTs');\nlet minOff = context.get('minOff');\nif (last === undefined || ts < last || !Number.isFinite(minOff)) {\n  minOff = now - ts;\n  context.set('count', 0);\n  context.set('winStart', now);\n}\ncontext.set('lastTs', ts);\nconst off = now - ts;\nminOff = Math.min(minOff, off);\ncontext.set('minOff', minOff);\nconst lag = off - minOff;\nlet count = (context.get('count') || 0) + 1;\nlet winStart = context.get('winStart') || now;\nif (now - winStart >= 1) {\n  node.status({fill: lag > 0.5 ? 'red' : 'green', shape: 'dot', text: 'Verzögerung ' + lag.toFixed(2) + ' s | ' + count + ' Nachr./s'});\n  count = 0;\n  winStart = now;\n}\ncontext.set('count', count);\ncontext.set('winStart', winStart);\nreturn null;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 280,
+        "y": 540,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f6a7b8c9d0e10001",
+        "type": "function",
+        "z": "d321589ef9b5426e",
+        "name": "Magnitude",
+        "func": "var magX = msg.payload.MagX;\nvar magY = msg.payload.MagY;\nvar magZ = msg.payload.MagZ;\n\nvar magnitude = Math.sqrt((magX*magX)+(magY*magY)+(magZ*magZ));\n\n// Punkt fuer den Chart: Linie, Zeit, Wert\nmsg.payload = { series: 'Magnitude', x: Date.now(), y: magnitude };\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 640,
+        "wires": [
+            [
+                "f6a7b8c9d0e10002"
+            ]
+        ]
+    },
+    {
+        "id": "f6a7b8c9d0e10002",
+        "type": "join",
+        "z": "d321589ef9b5426e",
+        "name": "4 Werte bündeln",
+        "mode": "custom",
+        "build": "array",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "useparts": false,
+        "accumulate": false,
+        "timeout": "0.5",
+        "count": "4",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 650,
+        "y": 640,
+        "wires": [
+            [
+                "f6a7b8c9d0e10003",
+                "7b410a8efdd8945d",
+                "a7b8c9d0e1f20001"
+            ]
+        ]
+    },
+    {
+        "id": "f6a7b8c9d0e10003",
+        "type": "ui-chart",
+        "z": "d321589ef9b5426e",
+        "group": "448d39c77cb18c4c",
+        "name": "Magnitude",
+        "label": "Magnitude",
+        "order": 1,
+        "chartType": "line",
+        "category": "series",
+        "categoryType": "property",
+        "xAxisLabel": "",
+        "xAxisProperty": "x",
+        "xAxisPropertyType": "property",
+        "xAxisType": "time",
+        "xAxisFormat": "",
+        "xAxisFormatType": "auto",
+        "xmin": "",
+        "xmax": "",
+        "yAxisLabel": "Mikrotesla",
+        "yAxisProperty": "y",
+        "yAxisPropertyType": "property",
+        "ymin": "",
+        "ymax": "",
+        "bins": 10,
+        "action": "append",
+        "stackSeries": false,
+        "pointShape": "false",
+        "pointRadius": 0,
+        "showLegend": true,
+        "removeOlder": "60",
+        "removeOlderUnit": "1",
+        "removeOlderPoints": "",
+        "colors": [
+            "#0095ff",
+            "#ff0000",
+            "#ff7f0e",
+            "#2ca02c",
+            "#a347e1",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "textColor": [
+            "#666666"
+        ],
+        "textColorDefault": true,
+        "gridColor": [
+            "#e5e5e5"
+        ],
+        "gridColorDefault": true,
+        "width": "",
+        "height": "",
+        "className": "",
+        "interpolation": "linear",
+        "x": 890,
+        "y": 640,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a7b8c9d0e1f20001",
+        "type": "ui-template",
+        "z": "d321589ef9b5426e",
+        "group": "448d39c77cb18c4c",
+        "page": "",
+        "ui": "",
+        "name": "Metalldetektor Ton",
+        "order": 2,
+        "width": 8,
+        "height": 0,
+        "head": "",
+        "format": "<template>\n  <div style=\"display:flex; align-items:center; gap:16px; flex-wrap:wrap;\">\n    <v-btn :color=\"running ? 'red' : 'primary'\" @click=\"toggle\">\n      {{ running ? 'Ton aus' : 'Ton an' }}\n    </v-btn>\n    <span>{{ wert }} µT | Basis {{ basisAnzeige }} µT | Ausschlag {{ ausschlag }} µT → {{ frequenz }} Hz</span>\n  </div>\n</template>\n\n<script>\nexport default {\n  data () {\n    return {\n      // ===== Einstellungen =====\n      RAUSCHEN: 20,          // Ausschlag unter diesem Wert = Ruhe (µT)\n      AUSSCHLAG_MAX: 2000,  // ab diesem Ausschlag: höchster und lautester Ton (µT)\n      BASIS_ZEIT: 0,        // Sekunden Verlauf für die Basis; ein Metall direkt am Handy wird nach ca. der Hälfte zur neuen Basis (0 = feste Basis)\n      BASIS_FEST: 40,       // nur wenn BASIS_ZEIT = 0: feste Basis (µT)\n      TON_MIN: 150,         // Ton in Ruhe (Hz)\n      TON_MAX: 1000,        // Ton beim stärksten Ausschlag (Hz)\n      LEISE: 0.06,          // Lautstärke in Ruhe (0 bis 1)\n      LAUT: 0.3,            // Lautstärke beim stärksten Ausschlag (0 bis 1)\n      TREMOLO: true,        // Ton pulsiert schneller, je stärker der Ausschlag\n      TREMOLO_MAX: 15,      // Pulse pro Sekunde beim stärksten Ausschlag\n      WELLENFORM: 'sine', // 'square' = brummig wie Detektor, 'sine' = weich\n      STILLE_NACH: 1000,    // ms ohne neue Daten, dann Ton stumm\n      // ===== Anzeige =====\n      running: false,\n      wert: '–',\n      basisAnzeige: '–',\n      ausschlag: '–',\n      frequenz: '–'\n    }\n  },\n  watch: {\n    msg: function () {\n      if (this.msg) this.neueWerte(this.msg.payload)\n    }\n  },\n  methods: {\n    toggle () {\n      if (this.running) {\n        this.stopTon()\n      } else {\n        this.startTon()\n      }\n    },\n    startTon () {\n      // Browser erlauben Ton erst nach einem Klick, darum Start per Knopf\n      const ctx = new (window.AudioContext || window.webkitAudioContext)()\n      // Klangkette: Oszillator -> Filter (macht den Ton weicher) -> Lautstärke -> Lautsprecher\n      const osc = ctx.createOscillator()\n      osc.type = this.WELLENFORM\n      osc.frequency.value = this.TON_MIN\n      const filter = ctx.createBiquadFilter()\n      filter.type = 'lowpass'\n      filter.frequency.value = this.TON_MIN * 3\n      filter.Q.value = 1\n      const amp = ctx.createGain()\n      amp.gain.value = 0\n      osc.connect(filter)\n      filter.connect(amp)\n      amp.connect(ctx.destination)\n      // Tremolo: ein langsamer Oszillator lässt die Lautstärke pulsieren\n      const lfo = ctx.createOscillator()\n      lfo.type = 'sine'\n      lfo.frequency.value = 0.1\n      const lfoTiefe = ctx.createGain()\n      lfoTiefe.gain.value = 0\n      lfo.connect(lfoTiefe)\n      lfoTiefe.connect(amp.gain)\n      osc.start()\n      lfo.start()\n      this.audio = { ctx, osc, filter, amp, lfo, lfoTiefe }\n      this.running = true\n    },\n    stopTon () {\n      clearTimeout(this.stilleTimer)\n      if (this.audio) {\n        this.audio.osc.stop()\n        this.audio.lfo.stop()\n        this.audio.ctx.close()\n      }\n      this.audio = null\n      this.running = false\n    },\n    neueWerte (payload) {\n      // akzeptiert: Zahl, {y: Zahl} oder Liste davon\n      const liste = Array.isArray(payload) ? payload : [payload]\n      let staerkster = 0\n      let letzter = null\n      for (const p of liste) {\n        const v = Number(p && typeof p === 'object' ? p.y : p)\n        if (!Number.isFinite(v)) continue\n        // Basis = Median der letzten BASIS_ZEIT Sekunden (Erdmagnetfeld, Handy-Lage)\n        // Der Median ignoriert kurze Peaks, folgt aber dauerhaften Änderungen\n        if (this.BASIS_ZEIT > 0) {\n          if (!this.verlauf) this.verlauf = []\n          this.verlauf.push(v)\n          const n = Math.max(1, Math.round(this.BASIS_ZEIT * 20))\n          if (this.verlauf.length > n) this.verlauf.splice(0, this.verlauf.length - n)\n          const sortiert = this.verlauf.slice().sort((a, b) => a - b)\n          this.basis = sortiert[Math.floor(sortiert.length / 2)]\n        } else {\n          this.basis = this.BASIS_FEST\n        }\n        // Peak im Paket merken\n        staerkster = Math.max(staerkster, Math.abs(v - this.basis))\n        letzter = v\n      }\n      if (letzter === null) return\n\n      // Ausschlag in Anteil 0 bis 1 umrechnen (logarithmisch)\n      let anteil = 0\n      if (staerkster > this.RAUSCHEN) {\n        anteil = Math.log(staerkster / this.RAUSCHEN) / Math.log(this.AUSSCHLAG_MAX / this.RAUSCHEN)\n        anteil = Math.min(Math.max(anteil, 0), 1)\n      }\n      const f = this.TON_MIN + anteil * (this.TON_MAX - this.TON_MIN)\n      const lautst = this.LEISE + Math.pow(anteil, 0.7) * (this.LAUT - this.LEISE)\n\n      this.wert = letzter.toFixed(1)\n      this.basisAnzeige = this.basis.toFixed(1)\n      this.ausschlag = staerkster.toFixed(1)\n      this.frequenz = Math.round(f)\n\n      if (!this.running || !this.audio) return\n      const au = this.audio\n      const t = au.ctx.currentTime\n      // schnell lauter/höher, langsamer wieder zurück (wie beim Detektor)\n      const tau = anteil > this.letzterAnteil ? 0.03 : 0.2\n      this.letzterAnteil = anteil\n      au.osc.frequency.setTargetAtTime(f, t, tau)\n      au.filter.frequency.setTargetAtTime(f * 3, t, tau)\n      au.amp.gain.setTargetAtTime(lautst, t, tau)\n      if (this.TREMOLO) {\n        au.lfo.frequency.setTargetAtTime(0.1 + anteil * this.TREMOLO_MAX, t, tau)\n        au.lfoTiefe.gain.setTargetAtTime(lautst * 0.5 * anteil, t, tau)\n      }\n\n      // kommen keine Daten mehr, Ton ausblenden\n      clearTimeout(this.stilleTimer)\n      this.stilleTimer = setTimeout(() => {\n        if (this.audio) {\n          const t2 = this.audio.ctx.currentTime\n          this.audio.amp.gain.setTargetAtTime(0, t2, 0.05)\n          this.audio.lfoTiefe.gain.setTargetAtTime(0, t2, 0.05)\n        }\n      }, this.STILLE_NACH)\n    }\n  },\n  unmounted () {\n    this.stopTon()\n  }\n}\n</script>",
+        "storeOutMessages": false,
+        "passthru": false,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "className": "",
+        "x": 830,
+        "y": 540,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b1c2d3e4f5a60001",
+        "type": "ui-button",
+        "z": "d321589ef9b5426e",
+        "group": "448d39c77cb18c4c",
+        "name": "Graph zurücksetzen",
+        "label": "Graph zurücksetzen",
+        "order": 3,
+        "width": 3,
+        "height": 1,
+        "emulateClick": false,
+        "tooltip": "Löscht alle Datenpunkte im Graphen",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "refresh",
+        "iconPosition": "left",
+        "payload": "[]",
+        "payloadType": "json",
+        "topic": "",
+        "topicType": "str",
+        "buttonColor": "#f2d307",
+        "textColor": "#000000",
+        "iconColor": "",
+        "enableClick": true,
+        "enablePointerdown": false,
+        "pointerdownPayload": "",
+        "pointerdownPayloadType": "str",
+        "enablePointerup": false,
+        "pointerupPayload": "",
+        "pointerupPayloadType": "str",
+        "x": 1080,
+        "y": 560,
+        "wires": [
+            [
+                "f6a7b8c9d0e10003"
+            ]
+        ]
+    },
+    {
+        "id": "eabea82c6053f99d",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "clt-lab-n-1427.zhaw.ch",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "448d39c77cb18c4c",
+        "type": "ui-group",
+        "name": " ",
+        "page": "a14f05f87fd8778e",
+        "width": 12,
+        "height": 1,
+        "order": 1,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "a14f05f87fd8778e",
+        "type": "ui-page",
+        "name": "Metalldetektor",
+        "ui": "c00af8a8ea40f7ea",
+        "path": "/metalldetektorAudio",
+        "icon": "home",
+        "layout": "grid",
+        "theme": "a526081e4f8fa0bb",
+        "breakpoints": [
+            {
+                "name": "Default",
+                "px": "0",
+                "cols": "3"
+            },
+            {
+                "name": "Tablet",
+                "px": "576",
+                "cols": "6"
+            },
+            {
+                "name": "Small Desktop",
+                "px": "768",
+                "cols": "9"
+            },
+            {
+                "name": "Desktop",
+                "px": "1024",
+                "cols": "12"
+            }
+        ],
+        "order": 1,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "c00af8a8ea40f7ea",
+        "type": "ui-base",
+        "name": "Mein Dashboard",
+        "path": "/dashboard",
+        "appIcon": "",
+        "includeClientData": true,
+        "acceptsClientConfig": [
+            "ui-notification",
+            "ui-control"
+        ],
+        "showPathInSidebar": false,
+        "headerContent": "page",
+        "navigationStyle": "default",
+        "titleBarStyle": "default",
+        "showReconnectNotification": true,
+        "notificationDisplayTime": 1,
+        "showDisconnectNotification": true,
+        "allowInstall": false
+    },
+    {
+        "id": "a526081e4f8fa0bb",
+        "type": "ui-theme",
+        "name": "Default Theme",
+        "colors": {
+            "surface": "#ffffff",
+            "primary": "#f2d307",
+            "bgPage": "#313131",
+            "groupBg": "#31312b",
+            "groupOutline": "#cccccc"
+        },
+        "sizes": {
+            "density": "default",
+            "pagePadding": "12px",
+            "groupGap": "12px",
+            "groupBorderRadius": "4px",
+            "widgetGap": "12px"
+        }
+    },
+    {
+        "id": "9dd7092f4f31f4e2",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "@flowfuse/node-red-dashboard": "1.31.0"
+        }
+    }
+]

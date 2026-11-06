@@ -1,0 +1,5 @@
+(name='micropython', version=(1, 19, 1), _machine='Raspberry Pi Pico with RP2040', _mpy=4358) 3.4.0; MicroPython v1.19.1-966-g05bb26010 on 2023-03-13
+(sysname='rp2', nodename='rp2', release='1.19.1', version='v1.19.1-966-g05bb26010 on 2023-03-13 (GNU 12.1.0 MinSizeRel)', machine='Raspberry Pi Pico with RP2040')
+[]
+free 221408
+calib [Errno 2] ENOENT

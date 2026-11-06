@@ -1,0 +1,55 @@
+[BRIDGE] hochgeladen bob_core.py (6337 B)
+[BRIDGE] hochgeladen bob.py (2242 B)
+[BRIDGE] hochgeladen ctrl_mpc.py (8040 B)
+[BRIDGE] hochgeladen ctrl_kombi.py (1859 B)
+[BRIDGE] hochgeladen demo_kombi.py (2500 B)
+Warte auf Ball ...
+Ball erkannt bei 192 mm, Start
+t=  0.5 s  x=  180 mm  u= 14.5°
+t=  1.1 s  x=  184 mm  u=-18.1°
+t=  1.6 s  x=  176 mm  u= -8.9°
+t=  2.1 s  x=  174 mm  u= -5.5°
+RUHE nach 1.4 s (bei 177 mm)
+t=  2.6 s  x=  174 mm  u=  0.8°
+t=  3.2 s  x=  175 mm  u=-13.1°
+t=  3.7 s  x=  168 mm  u=  1.9°
+t=  4.2 s  x=  166 mm  u=-19.9°
+t=  4.7 s  x=  174 mm  u=-17.6°
+t=  5.3 s  x=  168 mm  u=-11.5°
+t=  5.8 s  x=  170 mm  u= -6.3°
+t=  6.3 s  x=  170 mm  u= -6.4°
+t=  6.9 s  x=  171 mm  u=-13.9°
+t=  7.4 s  x=  165 mm  u= -7.1°
+t=  7.9 s  x=  167 mm  u= -9.6°
+t=  8.4 s  x=  176 mm  u=-17.6°
+t=  9.0 s  x=  170 mm  u=-10.0°
+t=  9.5 s  x=  174 mm  u=-15.9°
+t= 10.0 s  x=  171 mm  u=-17.6°
+t= 10.5 s  x=  168 mm  u=-11.8°
+t= 11.1 s  x=  169 mm  u= -5.8°
+t= 11.6 s  x=  171 mm  u=-11.8°
+t= 12.1 s  x=  171 mm  u=-11.8°
+t= 12.6 s  x=  170 mm  u=-11.8°
+t= 13.2 s  x=  173 mm  u=-11.5°
+t= 13.7 s  x=  167 mm  u= -5.9°
+t= 14.2 s  x=  174 mm  u=-12.0°
+t= 14.8 s  x=  170 mm  u=-12.0°
+t= 15.3 s  x=  168 mm  u=-12.0°
+t= 15.8 s  x=  169 mm  u=-11.9°
+t= 16.3 s  x=  168 mm  u=-11.9°
+t= 16.9 s  x=  170 mm  u=-17.0°
+t= 17.4 s  x=  169 mm  u=-11.0°
+t= 17.9 s  x=  171 mm  u=-16.9°
+t= 18.4 s  x=  171 mm  u=-11.0°
+t= 19.0 s  x=  173 mm  u=-16.8°
+t= 19.5 s  x=  171 mm  u=-11.0°
+t= 20.0 s  x=  169 mm  u=-11.0°
+t= 20.6 s  x=  171 mm  u=-11.0°
+t= 21.1 s  x=  172 mm  u=-11.0°
+t= 21.6 s  x=  170 mm  u= -5.0°
+t= 22.1 s  x=  171 mm  u=-10.7°
+t= 22.7 s  x=  171 mm  u=-11.0°
+t= 23.2 s  x=  171 mm  u=-17.0°
+
+[BRIDGE] Timeout: Ctrl-C gesendet
+Stopp

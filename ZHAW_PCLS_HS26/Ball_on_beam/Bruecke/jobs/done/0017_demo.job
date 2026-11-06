@@ -1,0 +1,1 @@
+{"upload": ["bridge/pico_files/bob_core.py", "bridge/pico_files/bob.py", "bridge/pico_files/ctrl_mpc.py", "bridge/pico_files/ctrl_kombi.py", "bridge/pico_files/demo_kombi.py"], "run": "import demo_kombi\n", "timeout": 25}

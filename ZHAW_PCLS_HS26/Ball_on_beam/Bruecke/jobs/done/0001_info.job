@@ -1,0 +1,1 @@
+{"upload": [], "run": "import os, sys, gc\nprint(sys.implementation, sys.version)\nprint(os.uname())\nprint(os.listdir())\ngc.collect(); print('free', gc.mem_free())\ntry:\n    print(open('calib.json').read())\nexcept Exception as e:\n    print('calib', e)\n", "timeout": 20}

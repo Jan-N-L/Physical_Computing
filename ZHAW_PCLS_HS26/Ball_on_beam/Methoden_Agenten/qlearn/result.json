@@ -1,0 +1,39 @@
+{
+ "n": 200,
+ "erfolg": 156,
+ "quote": 0.78,
+ "T_median": 4.652952004978881,
+ "T_p90": 30.0,
+ "T_max": 30.0,
+ "unter_5s": 109,
+ "unter_10s": 143,
+ "servo_weg_pro_s": 46.78626329119254,
+ "mess_vs_wahr_abweichend": 11,
+ "pro_start": {
+  "sensor": {
+   "n": 50,
+   "erfolg": 35,
+   "T_median": 5.782943458679971,
+   "T_max": 30.0
+  },
+  "klotz": {
+   "n": 50,
+   "erfolg": 40,
+   "T_median": 5.030823185511197,
+   "T_max": 30.0
+  },
+  "nah_sensor": {
+   "n": 50,
+   "erfolg": 42,
+   "T_median": 4.278315928280273,
+   "T_max": 30.0
+  },
+  "nah_klotz": {
+   "n": 50,
+   "erfolg": 39,
+   "T_median": 3.4419716962640505,
+   "T_max": 30.0
+  }
+ },
+ "summary": "Erfolg 156/200 | T median 4.65 s, p90 30.00 s, max 30.00 s | <=5 s: 109, <=10 s: 143 | Servo 47 \u00b0/s | Mess!=Wahr 11"
+}

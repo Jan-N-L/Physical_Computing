@@ -1,0 +1,29 @@
+[BRIDGE] hochgeladen kennlinie.py (1715 B)
+[BRIDGE] hochgeladen bob_core.py (6337 B)
+[BRIDGE] hochgeladen bob.py (2242 B)
+[BRIDGE] hochgeladen main_v3.py (7620 B)
+[BRIDGE] hochgeladen qlern.py (2828 B)
+[BRIDGE] hochgeladen ctrl_mpc.py (8040 B)
+[BRIDGE] hochgeladen ctrl_kombi.py (2888 B)
+EP,sensor,-1,3,OK,4.27
+EP,klotz,286,2,OK,6.31
+EP,sensor,-3,1,OK,4.41
+EP,klotz,283,2,OK,9.00
+EP,sensor,-1,1,OK,6.13
+EP,klotz,284,2,OK,5.30
+EP,sensor,-1,1,OK,2.56
+EP,klotz,284,2,OK,9.37
+EP,sensor,-3,1,OK,6.68
+
+[BRIDGE] STOP-Datei: Ctrl-C gesendet
+
+[BRIDGE] FEHLER:
+Traceback (most recent call last):
+  File "<stdin>", line 2, in <module>
+  File "qlern.py", line 73, in training
+  File "bob_core.py", line 137, in vorbereiten
+  File "bob.py", line 23, in ping
+  File "vl53l0x.py", line 139, in ping
+  File "vl53l0x.py", line 438, in read
+  File "vl53l0x.py", line 153, in _register
+KeyboardInterrupt: 

@@ -1,0 +1,1 @@
+{"upload": ["bridge/pico_files/bob_core.py", "bridge/pico_files/bob.py", "bridge/pico_files/ctrl_mpc.py", "bridge/pico_files/ctrl_kombi.py"], "run": "import bob\nfor st in ['sensor','klotz','sensor','klotz','sensor','klotz']:\n    bob.reihe('ctrl_kombi',[st])\n    bob.reihe('ctrl_kombi',[st],{'rate_u':140.0,'wt':3.0})\n", "timeout": 900}

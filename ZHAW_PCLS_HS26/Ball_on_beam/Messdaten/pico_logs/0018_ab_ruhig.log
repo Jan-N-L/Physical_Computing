@@ -1,0 +1,2 @@
+
+[BRIDGE] AUSNAHME: SerialException("WriteFile failed (PermissionError(13, 'Das Gerät erkennt den Befehl nicht.', None, 22))")

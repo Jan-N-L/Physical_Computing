@@ -1,0 +1,1 @@
+{"upload": ["bridge/pico_files/bob_core.py", "bridge/pico_files/bob.py", "bridge/pico_files/ctrl_pid.py"], "run": "import bob\nbob.reihe('ctrl_pid', ['sensor','klotz','sensor','klotz'])\n", "timeout": 300}

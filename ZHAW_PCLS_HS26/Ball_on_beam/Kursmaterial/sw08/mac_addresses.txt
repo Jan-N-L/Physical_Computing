@@ -1,0 +1,2 @@
+Raspberry Pi (raspberrypi, 160.85.153.106): dc:a6:32:cc:10:e9  - aus ARP, nicht bestaetigt, ob eigener Pi; Schnittstelle unbekannt
+Pico (WLAN, Output get_mac_address.py):     2c:cf:67:d8:90:18

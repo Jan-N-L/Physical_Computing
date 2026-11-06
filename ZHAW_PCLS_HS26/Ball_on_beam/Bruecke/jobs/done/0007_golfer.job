@@ -1,0 +1,1 @@
+{"upload": ["bridge/pico_files/vl53l0x.py", "bridge/pico_files/kennlinie.py", "bridge/pico_files/bob_core.py", "bridge/pico_files/bob.py", "bridge/pico_files/ctrl_golfer.py"], "run": "import bob\nbob.reihe('ctrl_golfer', ['sensor','klotz','sensor','klotz'])\n", "timeout": 300}

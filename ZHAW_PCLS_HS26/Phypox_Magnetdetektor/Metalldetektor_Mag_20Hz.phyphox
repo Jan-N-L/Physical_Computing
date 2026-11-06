@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+<phyphox xmlns="http://phyphox.org/xml" version="1.14" locale="de">
+    <title>Metalldetektor MQTT 20Hz</title>
+    <category>PCLS Experiment</category>
+    <description>Schlankes Experiment: sendet nur Magnetometer (x, y, z) und Messzeit per MQTT mit 20 Hz an zhaw/pcls/phyphox/landoja2.</description>
+    <icon>MAG</icon>
+    <data-containers>
+        <container size="1" static="false">MagX</container>
+        <container size="1" static="false">MagY</container>
+        <container size="1" static="false">MagZ</container>
+        <container size="1" static="false">Timestamp</container>
+    </data-containers>
+    <input>
+        <sensor type="magnetic_field" rate="50" average="false">
+            <output component="x">MagX</output>
+            <output component="y">MagY</output>
+            <output component="z">MagZ</output>
+            <output component="t">Timestamp</output>
+        </sensor>
+    </input>
+    <views>
+        <view label="Status">
+            <info label="server=clt-lab-n-1427.zhaw.ch:1883; topic=zhaw/pcls/phyphox/landoja2; senden=20Hz; sensor=50Hz" size="1.2" />
+            <value label="MagX" unit="µT" precision="1" size="1.5"><input>MagX</input></value>
+            <value label="MagY" unit="µT" precision="1" size="1.5"><input>MagY</input></value>
+            <value label="MagZ" unit="µT" precision="1" size="1.5"><input>MagZ</input></value>
+            <value label="Zeit" unit="s" precision="1" size="1"><input>Timestamp</input></value>
+        </view>
+    </views>
+    <export>
+    </export>
+    <network>
+        <connection service="mqtt/json" address="clt-lab-n-1427.zhaw.ch:1883" sendTopic="zhaw/pcls/phyphox/landoja2" conversion="none" interval="0.05">
+            <send id="MagX" type="buffer" datatype="number" clear="false">MagX</send>
+            <send id="MagY" type="buffer" datatype="number" clear="false">MagY</send>
+            <send id="MagZ" type="buffer" datatype="number" clear="false">MagZ</send>
+            <send id="Timestamp" type="buffer" datatype="number" clear="false">Timestamp</send>
+        </connection>
+    </network>
+</phyphox>

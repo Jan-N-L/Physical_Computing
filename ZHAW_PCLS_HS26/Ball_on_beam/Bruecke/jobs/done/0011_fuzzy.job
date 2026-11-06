@@ -1,0 +1,1 @@
+{"upload": ["bridge/pico_files/bob_core.py", "bridge/pico_files/bob.py", "bridge/pico_files/ctrl_fuzzy.py"], "run": "import bob\nbob.reihe('ctrl_fuzzy', ['sensor','klotz','sensor','klotz'])\n", "timeout": 300}

@@ -1,0 +1,26 @@
+[BRIDGE] hochgeladen kennlinie.py (1715 B)
+[BRIDGE] hochgeladen bob_core.py (6337 B)
+[BRIDGE] hochgeladen bob.py (2242 B)
+[BRIDGE] hochgeladen main_v3.py (8417 B)
+[BRIDGE] hochgeladen qlern.py (3387 B)
+[BRIDGE] hochgeladen ctrl_mpc.py (8040 B)
+[BRIDGE] hochgeladen ctrl_kombi.py (2888 B)
+AKTIONEN 6
+EP,sensor,0,5,FAIL,-1
+EP,sensor,0,5,OK,2.18
+EP,klotz,284,5,FAIL,-1
+EP,sensor,-1,1,OK,4.43
+EP,sensor,-4,1,OK,10.11
+EP,klotz,279,5,OK,1.83
+EP,sensor,-3,4,OK,3.58
+EP,sensor,0,1,OK,22.03
+EP,klotz,277,2,OK,17.14
+EP,sensor,-4,4,OK,11.00
+EP,sensor,-3,4,OK,5.51
+EP,klotz,282,2,OK,15.80
+EP,sensor,-1,4,OK,12.02
+EP,sensor,0,4,OK,3.22
+EP,klotz,284,0,OK,11.16
+Q sensor A0=-10.5(10) A1=-11.8(17) A2=-11.0(2) A3=-10.8(6) A4=-8.2(8) A5=-21.1(2)
+Q klotz A0=-9.4(3) A1=-8.6(3) A2=-10.2(26) A3=-12.2(3) A4=-10.2(2) A5=-20.9(2)
+QJSON {"klotz": {"Q": [-9.4318492, -8.632408, -10.169635, -12.156453, -10.214649, -20.915596], "N": [3, 3, 26, 3, 2, 2]}, "sensor": {"Q": [-10.534995, -11.831864, -10.979149, -10.783548, -8.160487, -21.091718], "N": [10, 17, 2, 6, 8, 2]}}
