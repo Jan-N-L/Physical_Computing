@@ -1,0 +1,524 @@
+[
+    {
+        "id": "f6e1937b641a5ac5",
+        "type": "tab",
+        "label": "Pico MQTT landoja V2",
+        "disabled": false,
+        "env": [],
+        "info": "Pico <-> MQTT <-> Node-RED (Dashboard 2).\n\n- `zhaw/pcls/landoja/from_pico`: Sensordaten vom Pico, JSON `{\"temp\": .., \"humid\": ..}`\n- `zhaw/pcls/landoja/to_pico`: Befehle an den Pico, JSON `{\"switch\": true|false}` (retain)\n\nTopics in den beiden MQTT-Nodes gleich setzen wie in main.py (BASE_TOPIC)."
+    },
+    {
+        "id": "9b912da3ea4588e1",
+        "type": "mqtt in",
+        "z": "f6e1937b641a5ac5",
+        "name": "from_pico",
+        "topic": "zhaw/pcls/landoja/from_pico",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "eabea82c6053f99d",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 150,
+        "y": 120,
+        "wires": [
+            [
+                "21c0db65645f31c8",
+                "d0bd10bdd027a3e1",
+                "70ae748fd3796ea2",
+                "8431774812a314fd"
+            ]
+        ]
+    },
+    {
+        "id": "21c0db65645f31c8",
+        "type": "debug",
+        "z": "f6e1937b641a5ac5",
+        "name": "Sensordaten",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 380,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "d0bd10bdd027a3e1",
+        "type": "ui-gauge",
+        "z": "f6e1937b641a5ac5",
+        "name": "Temperatur",
+        "group": "2c4305ef0bd24a05",
+        "order": 1,
+        "value": "$round(payload.temp, 1)",
+        "valueType": "jsonata",
+        "width": "3",
+        "height": "3",
+        "gtype": "gauge-half",
+        "gstyle": "needle",
+        "title": "Temperatur",
+        "alwaysShowTitle": false,
+        "floatingTitlePosition": "top-left",
+        "units": "°C",
+        "icon": "",
+        "prefix": "",
+        "suffix": "",
+        "segments": [
+            {
+                "from": "0",
+                "color": "#0095ff",
+                "text": "",
+                "textType": "label"
+            },
+            {
+                "from": "18",
+                "color": "#5cd65c",
+                "text": "",
+                "textType": "label"
+            },
+            {
+                "from": "26",
+                "color": "#ea5353",
+                "text": "",
+                "textType": "label"
+            }
+        ],
+        "min": 0,
+        "max": 40,
+        "sizeThickness": 16,
+        "sizeGap": 4,
+        "sizeKeyThickness": 8,
+        "styleRounded": true,
+        "styleGlow": false,
+        "className": "",
+        "x": 560,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "70ae748fd3796ea2",
+        "type": "ui-gauge",
+        "z": "f6e1937b641a5ac5",
+        "name": "Luftfeuchtigkeit",
+        "group": "2c4305ef0bd24a05",
+        "order": 2,
+        "value": "$round(payload.humid, 1)",
+        "valueType": "jsonata",
+        "width": "3",
+        "height": "3",
+        "gtype": "gauge-half",
+        "gstyle": "needle",
+        "title": "Luftfeuchtigkeit",
+        "alwaysShowTitle": false,
+        "floatingTitlePosition": "top-left",
+        "units": "%",
+        "icon": "",
+        "prefix": "",
+        "suffix": "",
+        "segments": [
+            {
+                "from": "0",
+                "color": "#ffc800",
+                "text": "",
+                "textType": "label"
+            },
+            {
+                "from": "30",
+                "color": "#5cd65c",
+                "text": "",
+                "textType": "label"
+            },
+            {
+                "from": "60",
+                "color": "#0095ff",
+                "text": "",
+                "textType": "label"
+            }
+        ],
+        "min": 0,
+        "max": 100,
+        "sizeThickness": 16,
+        "sizeGap": 4,
+        "sizeKeyThickness": 8,
+        "styleRounded": true,
+        "styleGlow": false,
+        "className": "",
+        "x": 560,
+        "y": 160,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8431774812a314fd",
+        "type": "function",
+        "z": "f6e1937b641a5ac5",
+        "name": "split temp/humid",
+        "func": "// Ein JSON-Objekt -> zwei Nachrichten, eine pro Chart\nlet temp  = { topic: \"Temperatur\",       payload: msg.payload.temp };\nlet humid = { topic: \"Luftfeuchtigkeit\", payload: msg.payload.humid };\nreturn [temp, humid];",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 390,
+        "y": 220,
+        "wires": [
+            [
+                "e3e3ac094fef94af"
+            ],
+            [
+                "abe4b64c7bd1623e"
+            ]
+        ]
+    },
+    {
+        "id": "e3e3ac094fef94af",
+        "type": "ui-chart",
+        "z": "f6e1937b641a5ac5",
+        "group": "2c4305ef0bd24a05",
+        "name": "Temperatur Verlauf",
+        "label": "Temperatur Verlauf",
+        "order": 3,
+        "chartType": "line",
+        "category": "topic",
+        "categoryType": "msg",
+        "xAxisLabel": "",
+        "xAxisProperty": "",
+        "xAxisPropertyType": "timestamp",
+        "xAxisType": "time",
+        "xAxisFormat": "",
+        "xAxisFormatType": "auto",
+        "xmin": "",
+        "xmax": "",
+        "yAxisLabel": "",
+        "yAxisProperty": "payload",
+        "yAxisPropertyType": "msg",
+        "ymin": "",
+        "ymax": "",
+        "bins": 10,
+        "action": "append",
+        "stackSeries": false,
+        "pointShape": "circle",
+        "pointRadius": 2,
+        "showLegend": false,
+        "removeOlder": "1",
+        "removeOlderUnit": "3600",
+        "removeOlderPoints": "",
+        "colors": [
+            "#b31e1e",
+            "#ff0000",
+            "#ff7f0e",
+            "#2ca02c",
+            "#a347e1",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "textColor": [
+            "#666666"
+        ],
+        "textColorDefault": true,
+        "gridColor": [
+            "#e5e5e5"
+        ],
+        "gridColorDefault": true,
+        "width": "6",
+        "height": "4",
+        "className": "",
+        "interpolation": "linear",
+        "x": 740,
+        "y": 200,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "abe4b64c7bd1623e",
+        "type": "ui-chart",
+        "z": "f6e1937b641a5ac5",
+        "group": "2c4305ef0bd24a05",
+        "name": "Luftfeuchtigkeit Verlauf",
+        "label": "Luftfeuchtigkeit Verlauf",
+        "order": 4,
+        "chartType": "line",
+        "category": "topic",
+        "categoryType": "msg",
+        "xAxisLabel": "",
+        "xAxisProperty": "",
+        "xAxisPropertyType": "timestamp",
+        "xAxisType": "time",
+        "xAxisFormat": "",
+        "xAxisFormatType": "auto",
+        "xmin": "",
+        "xmax": "",
+        "yAxisLabel": "",
+        "yAxisProperty": "payload",
+        "yAxisPropertyType": "msg",
+        "ymin": "",
+        "ymax": "",
+        "bins": 10,
+        "action": "append",
+        "stackSeries": false,
+        "pointShape": "circle",
+        "pointRadius": 2,
+        "showLegend": false,
+        "removeOlder": "1",
+        "removeOlderUnit": "3600",
+        "removeOlderPoints": "",
+        "colors": [
+            "#1e43b3",
+            "#ff0000",
+            "#ff7f0e",
+            "#2ca02c",
+            "#a347e1",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "textColor": [
+            "#666666"
+        ],
+        "textColorDefault": true,
+        "gridColor": [
+            "#e5e5e5"
+        ],
+        "gridColorDefault": true,
+        "width": "6",
+        "height": "4",
+        "className": "",
+        "interpolation": "linear",
+        "x": 740,
+        "y": 240,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "105dfc948a5ee97e",
+        "type": "ui-switch",
+        "z": "f6e1937b641a5ac5",
+        "name": "LED",
+        "label": "LED",
+        "group": "2c4305ef0bd24a05",
+        "order": 5,
+        "width": "3",
+        "height": "1",
+        "passthru": false,
+        "decouple": false,
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "className": "",
+        "layout": "row-spread",
+        "clickableArea": "switch",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "x": 150,
+        "y": 340,
+        "wires": [
+            [
+                "b580aa22faa733a4"
+            ]
+        ]
+    },
+    {
+        "id": "b580aa22faa733a4",
+        "type": "function",
+        "z": "f6e1937b641a5ac5",
+        "name": "switch state",
+        "func": "// true/false vom Schalter -> JSON fuer den Pico\nmsg.payload = { \"switch\": msg.payload };\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 340,
+        "wires": [
+            [
+                "c15ad8d288869e8e",
+                "d3c542480c646254"
+            ]
+        ]
+    },
+    {
+        "id": "c15ad8d288869e8e",
+        "type": "mqtt out",
+        "z": "f6e1937b641a5ac5",
+        "name": "to_pico",
+        "topic": "zhaw/pcls/landoja/to_pico",
+        "qos": "0",
+        "retain": "true",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "eabea82c6053f99d",
+        "x": 560,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "d3c542480c646254",
+        "type": "debug",
+        "z": "f6e1937b641a5ac5",
+        "name": "Befehl an Pico",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 570,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "2c4305ef0bd24a05",
+        "type": "ui-group",
+        "name": "Klima",
+        "page": "782889e95c9443d8",
+        "width": "6",
+        "height": 1,
+        "order": 1,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "782889e95c9443d8",
+        "type": "ui-page",
+        "name": "Pico MQTT landoja",
+        "ui": "c7d444a431906465",
+        "path": "/pico",
+        "icon": "chip",
+        "layout": "grid",
+        "theme": "a526081e4f8fa0bb",
+        "breakpoints": [
+            {
+                "name": "Default",
+                "px": "0",
+                "cols": "3"
+            },
+            {
+                "name": "Tablet",
+                "px": "576",
+                "cols": "6"
+            },
+            {
+                "name": "Small Desktop",
+                "px": "768",
+                "cols": "9"
+            },
+            {
+                "name": "Desktop",
+                "px": "1024",
+                "cols": "12"
+            }
+        ],
+        "order": 1,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "eabea82c6053f99d",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "test.mosquitto.org",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "c7d444a431906465",
+        "type": "ui-base",
+        "name": "Phyphox-Listener",
+        "path": "/dashboard",
+        "appIcon": "",
+        "includeClientData": true,
+        "acceptsClientConfig": [
+            "ui-notification",
+            "ui-control"
+        ],
+        "showPathInSidebar": false,
+        "headerContent": "page",
+        "navigationStyle": "default",
+        "titleBarStyle": "default",
+        "showReconnectNotification": true,
+        "notificationDisplayTime": 1,
+        "showDisconnectNotification": true,
+        "allowInstall": true
+    },
+    {
+        "id": "a526081e4f8fa0bb",
+        "type": "ui-theme",
+        "name": "Default Theme",
+        "colors": {
+            "surface": "#ffffff",
+            "primary": "#0094CE",
+            "bgPage": "#eeeeee",
+            "groupBg": "#ffffff",
+            "groupOutline": "#cccccc"
+        },
+        "sizes": {
+            "density": "default",
+            "pagePadding": "12px",
+            "groupGap": "12px",
+            "groupBorderRadius": "4px",
+            "widgetGap": "12px"
+        }
+    },
+    {
+        "id": "a2c0cad517f02ee0",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "@flowfuse/node-red-dashboard": "1.27.1"
+        }
+    }
+]
